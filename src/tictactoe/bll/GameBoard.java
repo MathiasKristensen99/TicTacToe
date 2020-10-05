@@ -5,12 +5,34 @@
  */
 package tictactoe.bll;
 
+import java.util.Arrays;
+
 /**
  *
  * @author Stegger
  */
 public class GameBoard implements IGameModel
 {
+    /**
+     * @int rowsPlayed[row][column]
+     * Describes the rows x columns played, with player number (0 or 1)
+     */
+    private int[][] rowsPlayed;
+    private int currentPlayer;
+    private int amtRowsPlayed;
+
+    public GameBoard() {
+        resetGame();
+    }
+
+    public void resetGame() {
+        currentPlayer = 0;
+        rowsPlayed = new int[3][3];
+        for(int[] row : rowsPlayed) {
+            Arrays.fill(row, -1);
+        }
+    }
+
 
     /**
      * Returns 0 for player 0, 1 for player 1.
@@ -19,8 +41,7 @@ public class GameBoard implements IGameModel
      */
     public int getNextPlayer()
     {
-        //TODO Implement this method
-        return 0;
+        return (currentPlayer == 0 ? 0 : 1);
     }
 
     /**
@@ -35,14 +56,41 @@ public class GameBoard implements IGameModel
      */
     public boolean play(int col, int row)
     {
-        //TODO Implement this method
-        return true;
+        int v = rowsPlayed[row][col];
+        if(v == -1) {
+            rowsPlayed[row][col] = currentPlayer;
+
+            System.out.println("Field " + row + "x" + col + " was played by Player #" + rowsPlayed[row][col]);
+
+            if(currentPlayer == 0) { currentPlayer = 1; }
+            else { currentPlayer = 0; }
+
+            amtRowsPlayed++;
+
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     public boolean isGameOver()
     {
-        //TODO Implement this method
-        return false;
+        /*
+        Diagonal 1: 0x0, 1x1, 2x2
+        Diagonal 2: 2x0, 1x1, 0x2
+        Else:
+        All of row 0, all of row 1, all of row 2
+        All of col 0, all of col 1, all of col 2
+         */
+
+        if(amtRowsPlayed < 9) {
+            return false;
+        }
+        else {
+            System.out.println("game over");
+            return true;
+        }
     }
 
     /**
