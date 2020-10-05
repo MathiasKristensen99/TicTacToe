@@ -20,19 +20,29 @@ public class GameBoard implements IGameModel
     private int[][] rowsPlayed;
     private int currentPlayer;
     private int amtRowsPlayed;
+    private int winPlayer;
 
+    /**
+     * Reset the gameboard on init
+     */
     public GameBoard() {
         resetGame();
     }
 
+    /**
+     * Sets current player to 0
+     * Resets all rows and columns played to -1 (not played)
+     */
     public void resetGame() {
         currentPlayer = 0;
+        amtRowsPlayed = 0;
+        winPlayer = -1;
+
         rowsPlayed = new int[3][3];
         for(int[] row : rowsPlayed) {
             Arrays.fill(row, -1);
         }
     }
-
 
     /**
      * Returns 0 for player 0, 1 for player 1.
@@ -85,10 +95,14 @@ public class GameBoard implements IGameModel
          */
 
         if(amtRowsPlayed < 9) {
-            return false;
+            if( getWinnerHorizontal() == -1 && getWinnerVertical() == -1) {
+                return false;
+            }
+            else {
+                return true;
+            }
         }
         else {
-            System.out.println("game over");
             return true;
         }
     }
@@ -100,16 +114,57 @@ public class GameBoard implements IGameModel
      */
     public int getWinner()
     {
-        //TODO Implement this method
-        return -1;
+        return winPlayer;
+    }
+
+    public void newGame() {
+        resetGame();
+    }
+
+    /*
+    Private functions (GameBoard exclusive)
+     */
+
+    /**
+     * Checks for winner, horizontally
+     * @return -1 if none, else return player ID
+     */
+
+    private int getWinnerHorizontal() {
+        boolean gameOver = false;
+        for(int[] row : rowsPlayed) {
+            if( ( row[0] == 0 && row[1] == 0 && row[2] == 0 ) || ( row[0] == 1 && row[1] == 1 && row[2] == 1 ) ) {
+                gameOver = true;
+                winPlayer = row[0];
+            }
+        }
+
+        if(gameOver) {
+            return winPlayer;
+        }
+        else {
+            return -1;
+        }
     }
 
     /**
-     * Resets the game to a new game state.
+     * Checks for winner, vertically
+     * @return -1 if none, else return player ID
      */
-    public void newGame()
-    {
-        //TODO Implement this method
-    }
+    private int getWinnerVertical() {
+        boolean gameOver = false;
+        for(int i = 0; i < rowsPlayed.length; i++) {
+            if( ( rowsPlayed[0][i] == 0 && rowsPlayed[1][i] == 0 && rowsPlayed[2][i] == 0 ) ) {
+                gameOver = true;
+                winPlayer = rowsPlayed[0][i];
+            }
+        }
 
+        if(gameOver) {
+            return winPlayer;
+        }
+        else {
+            return -1;
+        }
+    }
 }
