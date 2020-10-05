@@ -11,6 +11,13 @@ package tictactoe.bll;
  */
 public class GameBoard implements IGameModel
 {
+    private int[][] rowsPlayed = new int[3][3];
+    private int lastPlayer;
+
+    public GameBoard() {
+        lastPlayer = 0;
+    }
+
 
     /**
      * Returns 0 for player 0, 1 for player 1.
@@ -19,8 +26,7 @@ public class GameBoard implements IGameModel
      */
     public int getNextPlayer()
     {
-        //TODO Implement this method
-        return 0;
+        return (lastPlayer == 0 ? 0 : 1);
     }
 
     /**
@@ -35,6 +41,7 @@ public class GameBoard implements IGameModel
      */
     public boolean play(int col, int row)
     {
+        lastPlayer
         //TODO Implement this method
         return true;
     }
