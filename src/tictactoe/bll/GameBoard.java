@@ -76,7 +76,6 @@ public class GameBoard implements IGameModel
             else { currentPlayer = 0; }
 
             amtRowsPlayed++;
-
             return true;
         }
         else {
@@ -95,7 +94,7 @@ public class GameBoard implements IGameModel
          */
 
         if(amtRowsPlayed < 9) {
-            if( getWinnerHorizontal() == -1 && getWinnerVertical() == -1) {
+            if( getWinnerHorizontal() == -1 && getWinnerVertical() == -1 && getWinnerDiagonal() == -1) {
                 return false;
             }
             else {
@@ -105,6 +104,7 @@ public class GameBoard implements IGameModel
         else {
             return true;
         }
+
     }
 
     /**
@@ -114,6 +114,7 @@ public class GameBoard implements IGameModel
      */
     public int getWinner()
     {
+        getAllWinner();
         return winPlayer;
     }
 
@@ -126,10 +127,18 @@ public class GameBoard implements IGameModel
      */
 
     /**
+     * getAllWinner() wraps all getWinner functions, to please the tests :-)
+     */
+    private void getAllWinner() {
+        getWinnerHorizontal();
+        getWinnerVertical();
+        getWinnerDiagonal();
+    }
+
+    /**
      * Checks for winner, horizontally
      * @return -1 if none, else return player ID
      */
-
     private int getWinnerHorizontal() {
         boolean gameOver = false;
         for(int[] row : rowsPlayed) {
@@ -154,13 +163,31 @@ public class GameBoard implements IGameModel
     private int getWinnerVertical() {
         boolean gameOver = false;
         for(int i = 0; i < rowsPlayed.length; i++) {
-            if( ( rowsPlayed[0][i] == 0 && rowsPlayed[1][i] == 0 && rowsPlayed[2][i] == 0 ) ) {
+            if( ( rowsPlayed[0][i] == 0 && rowsPlayed[1][i] == 0 && rowsPlayed[2][i] == 0 ) || ( rowsPlayed[0][i] == 1 && rowsPlayed[1][i] == 1 && rowsPlayed[2][i] == 1 ) ) {
                 gameOver = true;
                 winPlayer = rowsPlayed[0][i];
             }
         }
 
         if(gameOver) {
+            return winPlayer;
+        }
+        else {
+            return -1;
+        }
+    }
+
+    /**
+     * Checks for winner, diagonally
+     * @return -1 if none, else return player Id
+     */
+    private int getWinnerDiagonal() {
+        if( (rowsPlayed[0][0] == 0 && rowsPlayed[1][1] == 0 && rowsPlayed[2][2] == 0) || (rowsPlayed[0][0] == 1 && rowsPlayed[1][1] == 1 && rowsPlayed[2][2] == 1) ) {
+            winPlayer = rowsPlayed[0][0];
+            return winPlayer;
+        }
+        else if( (rowsPlayed[2][0] == 0 && rowsPlayed[1][1] == 0 && rowsPlayed[0][2] == 0) || ( (rowsPlayed[2][0] == 1 && rowsPlayed[1][1] == 1 && rowsPlayed[0][2] == 1)) ) {
+            winPlayer = rowsPlayed[2][0];
             return winPlayer;
         }
         else {

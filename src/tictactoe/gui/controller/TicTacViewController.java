@@ -82,7 +82,8 @@ public class TicTacViewController implements Initializable
 
     private void setPlayer()
     {
-        lblPlayer.setText(TXT_PLAYER + game.getNextPlayer());
+        int nextPlayer = game.getNextPlayer() + 1; //Add +1 to getNextPlayer to show Player 1 vs Player 2
+        lblPlayer.setText(TXT_PLAYER + nextPlayer);
     }
 
     private void displayWinner(int winner)
@@ -94,6 +95,7 @@ public class TicTacViewController implements Initializable
                 message = "It's a draw :-(";
                 break;
             default:
+                winner = winner + 1;
                 message = "Player " + winner + " wins!!!";
                 break;
         }
