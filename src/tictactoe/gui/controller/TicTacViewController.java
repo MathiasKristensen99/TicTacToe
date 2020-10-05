@@ -48,17 +48,15 @@ public class TicTacViewController implements Initializable
             int player = game.getNextPlayer();
             if (game.play(c, r))
             {
+                Button btn = (Button) event.getSource();
+                String xOrO = player == 0 ? "X" : "O";
+                btn.setText(xOrO);
+                setPlayer();
+
                 if (game.isGameOver())
                 {
                     int winner = game.getWinner();
                     displayWinner(winner);
-                }
-                else
-                {
-                    Button btn = (Button) event.getSource();
-                    String xOrO = player == 0 ? "X" : "O";
-                    btn.setText(xOrO);
-                    setPlayer();
                 }
             }
         } catch (Exception e)
