@@ -41,7 +41,8 @@ public class GameBoard implements IGameModel
      */
     public boolean play(int col, int row)
     {
-        lastPlayer
+        if(lastPlayer == 0) { lastPlayer = 1; }
+        else { lastPlayer = 0; }
         //TODO Implement this method
         return true;
     }
